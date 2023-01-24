@@ -1,0 +1,132 @@
+\documentclass{article}
+
+%常规
+\usepackage{geometry}
+\usepackage{tikz}
+%符号
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+%基础设置
+\geometry{b5paper}
+\linespread{1.5}
+%个性化符号
+%\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+% Equation numbering
+\numberwithin{equation}{section}
+
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+
+
+\title{A Tale of Langlands Duality}
+\author{Yilu Shao\\ \footnotesize{\it Institut de Mathématiques de Bourgogne, Université de Bourgogne Franche-Comté,}\\ \footnotesize{\it 9 avenue Alain Savary, Dijon, France}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    A self-study record of the Kapustin-Witten paper \cite{Kapustin:2006pk} on gauge theory and geometric Langlands program.
+\end{abstract}
+
+\section{Electro-magnetic Duality in Electromagnetics}
+We start with the very easy abelian case as a warm-up. 
+\paragraph{Convention}
+I generally works with the Lorentzian signature $-+++$ but for most case we use Riemannian signature $++++$. Greek indices $\mu,\nu,...$ runs over $0,1,2,3$. Latin indices $i,j,...$ runs over space-like coordinate $1,2,3$, while $0$ always stands for time-like coordinate.
+
+\subsection{Classical Theory}
+The classical electrodynamics enjoys a good property. Consider the vacuum Maxwell equation
+\begin{equation}
+\begin{aligned}
+\label{maxwell1}
+\operatorname{div} \vec{{B}} &=0 &\operatorname{div} \vec{E} &=0  \\
+\operatorname{rot} \vec{E} &=-\frac{\partial \vec{B}}{\partial t} & \operatorname{rot} \vec{B} &=\frac{\partial \vec{E}}{\partial t}.
+\end{aligned}
+\end{equation}
+It is invariant under the transform
+\begin{equation}
+\label{em1}
+  (\vec{E},\vec{B})\mapsto(\vec{B},-\vec{E}).
+\end{equation}
+This is the primitive form of electro-magnetic duality.
+
+In the fancy bundle language, it is a $\mathrm{U}(1)$ gauge field described by connection $A$ on a principal $\mathrm{U}(1)$ bundle $E$ over a four-manifold $X$. The equation of motion is
+\begin{equation}
+\label{maxwell2}
+\dd \star F=0
+\end{equation}
+with $F=\dd A$ is the curvature 2-form and $\star$ is the Hodge dual. This corresponds to the left hand set of equations in \eqref{maxwell1}. The remaining two equations indicate that $\dd F=0$, by Bianchi identity.
+
+When $X=\vvmathbb{R}^{3,1}$, \eqref{maxwell2} is invariant under a transformation
+\begin{equation}
+\label{em2}
+F \mapsto F^{\prime}=\star F .
+\end{equation}
+This just resembles the electro-magnetic duality, in the sense that taking
+\begin{equation}
+E_i=F_{0 i}, \quad B_i=\frac{1}{2} \epsilon_{i j k} F_{j k},
+\end{equation}
+we can easily recover \eqref{em1}.
+
+Let me try to explain the confusing sentences in Kapustin's lecture \cite{Kapustin:2009ygz}.
+\begin{quote}
+    $F$ determines the holonomy of $A$ around all contractible loops in $X$. If $\pi_1(X)$ is trivial, $F$ completely determines $A$, up to gauge equivalence. In addition, if $H^2(X)\neq 0$, $F$ satisfies a quantization condition: its periods are integral multiples of $2\pi$. The cohomology class of $F$ is the Euler class of $E$ (or alternatively the first Chern class of the associated line bundle).
+\end{quote}
+The first thing is that
+
+\subsection{Quantization}
+It is the case that this duality no longer exists on arbitary manifold $X$ other then $\vvmathbb{R}^{3,1}$, but when it comes to the quantum theory, some miracle happens, as I will demonstrate in the following.
+
+Quantization of gauge field is given by the path integral
+\begin{equation}
+Z=\int \mathcal{D} A\, \ee^{\ii S(A)}
+\end{equation}
+with integration over all possible topologies of the bundle $E$. Here the action is the celebrated
+\begin{equation}
+S(A)=\frac{1}{2 e^2} \int_X F \wedge \star F+\frac{\theta}{8 \pi^2} \int_X F \wedge F.
+\end{equation}
+Note that the $\theta$-angle is a topological invariant and relies only on the topology. It doesn't affect the classical equation of motion. So if we write explicitly the sum over all isomorphism classes of $E$
+\begin{equation}
+Z=\sum_E \int \mathcal{D} A\, \ee^{\ii S(A)}.
+\end{equation}
+the $\theta$-angle tells us how to weigh contributions of different $E$.
+
+In order to compute it, we perform a Wick-rotation, then
+\begin{equation}
+Z=\sum_E \int \mathcal{D} A\, e^{-S_{\mathsf{E}}(A)}
+\end{equation}
+with an Euclidean action 
+\begin{equation}
+S_{\mathsf{E}}(A)=\int_X\left(\frac{1}{2 e^2} F \wedge \star F-\frac{i \theta}{8 \pi^2} F \wedge F\right).
+\end{equation}
+
+Assuming that $X$ is simply-connected. We want to replace the integration over $A$ with integration over the space of closed 2-forms $F$, which will make our life easier later. Here we introduce a ``Lagrangian multipler'' (I guess Kapustin actually wants to say this)
+\begin{equation}
+Z=\int \mathcal{D} F \mathcal{D} B \exp \left(-S_{\mathsf{E}}+\ii \int_X B \wedge \dd F\right)
+\end{equation}
+the new field $B$ is a 1-form on $X$ (or \textit{dual connection}), so that integration over it produces the desired constraint $\delta(\dd F)=\prod_{x\in X}\delta(\dd F(x))$. This allows us to integrate over all (not necessarily closed) 2-forms $F$. 
+
+Using our favourite Gaussian integral, we get
+\begin{equation}
+Z=\int \mathcal{D} B \exp \left(-\frac{1}{2 \hat{e}^2} \int_X G \wedge \star G+\frac{\ii \hat{\theta}}{8 \pi^2} \int_X G \wedge G\right)
+\end{equation}
+where $G=\dd B$ is the \textit{dual curvature}. The new coupling constants $\hat{e}^2$ and $\hat{\theta}$ are defined by
+\begin{equation}
+\frac{\hat{\theta}}{2 \pi}+\frac{2 \pi \ii}{\hat{e}^2}=-\left(\frac{\theta}{2 \pi}+\frac{2 \pi \ii}{e^2}\right)^{-1}
+\end{equation}
+
+
+
+\subsection{$S$-duality}
+
+\section{Montonen-Olive Duality}
+
+\nocite{Witten:2008ep,Frenkel:2005pa}
+\bibliographystyle{amsalpha}
+\bibliography{main.bib}
+
+\end{document}
